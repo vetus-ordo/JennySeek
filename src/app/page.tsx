@@ -1,7 +1,7 @@
 'use client';
 
 import useAppStore, { AppState } from '@/lib/store';
-import SplashScreen from '@/components/SplashScreen'; // Import the new component
+import SplashScreen from '@/components/SplashScreen';
 import AddStudentView from '@/components/AddStudentView';
 import TeacherDashboard from '@/components/TeacherDashboard';
 import StudentQuizView from '@/components/StudentQuizView';
@@ -13,7 +13,7 @@ export default function Home() {
   const renderView = () => {
     switch (view) {
       case 'splash':
-        return <SplashScreen />; // Add the splash screen case
+        return <SplashScreen />;
       case 'add-student':
         return <AddStudentView />;
       case 'dashboard':
@@ -23,12 +23,14 @@ export default function Home() {
       case 'report':
         return <GradedReportView />;
       default:
+        // Default to the splash screen for a clean start
         return <SplashScreen />;
     }
   }
 
   return (
-    <main>
+    // This main container ensures our content is centered and takes up the full screen
+    <main className="flex flex-col items-center justify-center min-h-screen">
       {renderView()}
     </main>
   );

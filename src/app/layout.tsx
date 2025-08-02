@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css"; // This line is crucial
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "EduSeek for Jenny",
-  description: "An assignment tool simulation.",
+  title: "JennySeek",
+  description: "A personalized learning experience. Built by Andrew. Inspired by Jenny."
 };
 
 export default function RootLayout({
@@ -13,6 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* The body tag will now use the default background and text colors from your new theme */}
       <body>{children}</body>
     </html>
   );

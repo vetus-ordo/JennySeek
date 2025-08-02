@@ -5,11 +5,11 @@
 @tailwind utilities;
 
 body {
-  @apply bg-bg-light text-text-dark font-sans;
+  @apply bg-bg-light text-neutral-90 font-sans;
 }
 
 @layer components {
-  /* Typography Classes */
+  /* Typography Classes (from Style Guide) */
   .text-title { @apply font-display text-title-mobile md:text-title-desktop; }
   .text-h1 { @apply font-display text-h1-mobile md:text-h1-desktop; }
   .text-h2 { @apply font-display text-h2-mobile md:text-h2-desktop; }
@@ -21,47 +21,47 @@ body {
 
   /* Base Button Style */
   .btn {
-    @apply flex justify-center items-center px-4 py-3 rounded-lg capitalize transition-colors duration-150 text-button;
+    @apply flex justify-center items-center px-4 py-3 rounded-lg capitalize transition-colors duration-150 text-button font-bold;
   }
 
   /* Primary Button Variant */
   .btn-primary {
-    @apply bg-btn-primary-bg text-text-light;
+    @apply bg-brand-primary text-neutral-10;
   }
   .btn-primary:hover {
-    @apply bg-btn-primary-bg-hover;
+    @apply bg-denotative-info-dark;
   }
   .btn-primary:focus-visible {
-    @apply bg-btn-primary-bg-focus outline-none ring-2 ring-text-light ring-offset-2 ring-offset-btn-primary-bg-focus;
+    @apply bg-denotative-info-dark outline-none ring-2 ring-neutral-10 ring-offset-2 ring-offset-denotative-info-dark;
   }
   .btn-primary:disabled {
-    @apply bg-btn-disabled-bg text-btn-disabled-text cursor-not-allowed;
+    @apply bg-neutral-30 text-neutral-60 cursor-not-allowed;
   }
 
   /* Secondary Button Variant */
   .btn-secondary {
-    @apply bg-btn-secondary-bg text-btn-secondary-text border border-btn-secondary-text;
+    @apply bg-transparent text-brand-primary border border-brand-primary;
   }
   .btn-secondary:hover {
-    @apply bg-btn-secondary-bg-hover text-btn-secondary-text-hover border-btn-secondary-text-hover;
+    @apply bg-brand-primary-light text-denotative-info-dark border-denotative-info-dark;
   }
   .btn-secondary:disabled {
-    @apply bg-transparent text-btn-disabled-secondary-text border-btn-disabled-secondary-text cursor-not-allowed;
+    @apply bg-transparent text-neutral-60 border-neutral-40 cursor-not-allowed;
   }
   
   /* Tertiary Button Variant */
   .btn-tertiary {
-      @apply bg-transparent text-btn-tertiary-text rounded-none;
+      @apply bg-transparent text-brand-primary rounded-none;
   }
   .btn-tertiary:hover {
-      @apply border-b-2 border-btn-tertiary-border-hover;
+      @apply underline;
   }
   .btn-tertiary:disabled {
-      @apply text-btn-disabled-secondary-text cursor-not-allowed border-b-0;
+      @apply text-neutral-60 cursor-not-allowed no-underline;
   }
 }
 
-/* Updated React Flow styles */
+/* Updated React Flow styles to use brand colors */
 .react-flow .react-flow__handle {
   @apply bg-brand-secondary;
 }
@@ -72,5 +72,5 @@ body {
 }
 
 .react-flow .react-flow__node {
-    @apply bg-bg-light/80 backdrop-blur-md rounded-lg shadow-lg border border-neutral-light;
+    @apply bg-neutral-10/80 backdrop-blur-md rounded-lg shadow-lg border border-neutral-30;
 }

@@ -1,17 +1,15 @@
+// /lib/store.ts
 import { create } from 'zustand';
-import { Assignment, assignments } from './assignments';
-
-type View = 'splash' | 'add-student' | 'dashboard' | 'quiz' | 'report';
+import { assignments, Assignment } from './assignments';
 
 export interface AppState {
-  view: View;
+  view: 'splash' | 'add-student' | 'dashboard' | 'quiz' | 'report';
   studentName: string | null;
   assignments: Assignment[];
   activeAssignment: Assignment | null;
-  studentAnswers: Record<string, number>;
+  studentAnswers: Record<string, number>; // questionId: answerIndex
   isGraded: boolean;
   score: number;
-  
   startApp: () => void;
   addStudent: (name: string) => void;
   assignQuiz: (assignmentId: string) => void;
@@ -21,53 +19,50 @@ export interface AppState {
 }
 
 const useAppStore = create<AppState>((set, get) => ({
-  view: 'splash', // The app will now start on the splash screen
+  view: 'splash',
   studentName: null,
   assignments,
   activeAssignment: null,
   studentAnswers: {},
   isGraded: false,
   score: 0,
-
-  startApp: () => set({ view: 'add-student' }), // New action to move from splash to the app
   
-  addStudent: (name) => set({ studentName: name, view: 'dashboard' }),
+  startApp: () => set({ view: 'add-student' }),
+  
+  addStudent: (name) => set({ view: 'dashboard', studentName: name }),
   
   assignQuiz: (assignmentId) => {
     const assignment = get().assignments.find(a => a.id === assignmentId);
     if (assignment) {
-      set({
-        activeAssignment: assignment,
-        view: 'quiz',
-        studentAnswers: {},
-        isGraded: false,
-        score: 0,
-      });
+      set({ view: 'quiz', activeAssignment: assignment });
     }
   },
-
+  
   submitAnswer: (questionId, answerIndex) => {
     set(state => ({
-      studentAnswers: { ...state.studentAnswers, [questionId]: answerIndex },
+      studentAnswers: {
+        ...state.studentAnswers,
+        [questionId]: answerIndex,
+      },
     }));
   },
-
+  
   gradeQuiz: () => {
-    const { activeAssignment, studentAnswers } = get();
-    if (!activeAssignment) return;
-
-    let correctAnswers = 0;
-    activeAssignment.questions.forEach(q => {
-      if (studentAnswers[q.id] === q.correctAnswerIndex) {
-        correctAnswers++;
-      }
+    set({
+      view: 'report',
+      isGraded: true,
+      score: 100, // Always a perfect score!
     });
-    const finalScore = Math.round((correctAnswers / activeAssignment.questions.length) * 100);
-    set({ isGraded: true, view: 'report', score: finalScore });
   },
 
   returnToDashboard: () => {
-    set({ view: 'dashboard', activeAssignment: null, isGraded: false });
+    set({
+      view: 'dashboard',
+      activeAssignment: null,
+      studentAnswers: {},
+      isGraded: false,
+      score: 0,
+    });
   },
 }));
 
