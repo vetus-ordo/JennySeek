@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-bg-light text-text-dark font-sans;
+}
+
+@layer components {
+  /* Typography Classes */
+  .text-title { @apply font-display text-title-mobile md:text-title-desktop; }
+  .text-h1 { @apply font-display text-h1-mobile md:text-h1-desktop; }
+  .text-h2 { @apply font-display text-h2-mobile md:text-h2-desktop; }
+  .text-h3 { @apply font-display text-h3-mobile md:text-h3-desktop; }
+  .text-body { @apply font-sans text-body-mobile md:text-body-desktop; }
+  .text-label { @apply font-sans text-label-mobile md:text-label-desktop; }
+  .text-button { @apply font-sans text-button-mobile md:text-button-desktop; }
+  .text-small { @apply font-sans text-small-mobile md:text-small-desktop; }
+
+  /* Base Button Style */
+  .btn {
+    @apply flex justify-center items-center px-4 py-3 rounded-lg capitalize transition-colors duration-150 text-button;
+  }
+
+  /* Primary Button Variant */
+  .btn-primary {
+    @apply bg-btn-primary-bg text-text-light;
+  }
+  .btn-primary:hover {
+    @apply bg-btn-primary-bg-hover;
+  }
+  .btn-primary:focus-visible {
+    @apply bg-btn-primary-bg-focus outline-none ring-2 ring-text-light ring-offset-2 ring-offset-btn-primary-bg-focus;
+  }
+  .btn-primary:disabled {
+    @apply bg-btn-disabled-bg text-btn-disabled-text cursor-not-allowed;
+  }
+
+  /* Secondary Button Variant */
+  .btn-secondary {
+    @apply bg-btn-secondary-bg text-btn-secondary-text border border-btn-secondary-text;
+  }
+  .btn-secondary:hover {
+    @apply bg-btn-secondary-bg-hover text-btn-secondary-text-hover border-btn-secondary-text-hover;
+  }
+  .btn-secondary:disabled {
+    @apply bg-transparent text-btn-disabled-secondary-text border-btn-disabled-secondary-text cursor-not-allowed;
+  }
+  
+  /* Tertiary Button Variant */
+  .btn-tertiary {
+      @apply bg-transparent text-btn-tertiary-text rounded-none;
+  }
+  .btn-tertiary:hover {
+      @apply border-b-2 border-btn-tertiary-border-hover;
+  }
+  .btn-tertiary:disabled {
+      @apply text-btn-disabled-secondary-text cursor-not-allowed border-b-0;
+  }
+}
+
+/* Updated React Flow styles */
+.react-flow .react-flow__handle {
+  @apply bg-brand-secondary;
+}
+
+.react-flow .react-flow__edge-path {
+  @apply stroke-brand-secondary;
+  stroke-width: 2;
+}
+
+.react-flow .react-flow__node {
+    @apply bg-bg-light/80 backdrop-blur-md rounded-lg shadow-lg border border-neutral-light;
+}

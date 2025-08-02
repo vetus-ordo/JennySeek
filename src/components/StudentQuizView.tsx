@@ -1,0 +1,59 @@
+'use client';
+import React, { useState } from 'react';
+import useAppStore from '@/lib/store';
+import Button from '@/components/ui/Button';
+
+const StudentQuizView = () => {
+  const { activeAssignment, studentAnswers, submitAnswer, gradeQuiz } = useAppStore();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  if (!activeAssignment) return null;
+
+  const currentQuestion = activeAssignment.questions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === activeAssignment.questions.length - 1;
+
+  const handleNext = () => {
+    if (!isLastQuestion) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      gradeQuiz();
+    }
+  };
+
+  return (
+    <div className="bg-bg-light min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-3xl bg-white p-8 rounded-2xl shadow-2xl border border-neutral-light">
+        <div className="text-center mb-8">
+          <p className="text-label-desktop text-brand-secondary font-semibold">{activeAssignment.title}</p>
+          <h2 className="text-h1-desktop mt-2">{currentQuestion.text}</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {currentQuestion.options.map((option, index) => (
+            <button
+              key={index}
+              onClick={() => submitAnswer(currentQuestion.id, index)}
+              className={`w-full text-left p-4 rounded-lg border-2 text-button transition-all transform hover:scale-105
+                ${studentAnswers[currentQuestion.id] === index 
+                  ? 'bg-btn-secondary-bg border-btn-secondary-text text-btn-secondary-text font-bold' 
+                  : 'bg-white border-neutral-light hover:border-neutral-dark/50'
+                }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+        <div className="mt-10 flex justify-end">
+          <Button
+            variant="primary"
+            onClick={handleNext}
+            disabled={studentAnswers[currentQuestion.id] === undefined}
+          >
+            {isLastQuestion ? 'Submit Assignment' : 'Next Question'}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StudentQuizView;
