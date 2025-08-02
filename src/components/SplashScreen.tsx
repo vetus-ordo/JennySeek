@@ -9,13 +9,13 @@ const SplashScreen = () => {
 
   return (
     // Uses the dark background color from your color palette
-    <div className="bg-bg-dark text-text-light min-h-screen flex items-center justify-center p-4">
+    <div className="bg-bg-light text-text-dark min-h-screen flex items-center justify-center p-4">
       <div className="text-center space-y-6">
         <h1 className="text-title-desktop font-display animate-fade-in-down">
           JennySeek
         </h1>
         <p className="text-h2-desktop text-neutral-light max-w-2xl animate-fade-in-up">
-          A personalized learning experience. Built by Andrew. Inspired by Jenny.
+          A personalized learning experience by Andrew. Inspired by Jenny.
         </p>
         <div className="animate-fade-in-up-delay">
           <Button variant="primary" onClick={startApp} className="text-xl px-8 py-4">

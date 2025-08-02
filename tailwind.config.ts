@@ -8,10 +8,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Roboto', 'sans-serif'],
-        display: ['Montserrat', 'sans-serif'],
-      },
+      // Correctly mapped font sizes from your original config
       fontSize: {
         'title-desktop': ['64px', { lineHeight: '78px', letterSpacing: '0.06em', fontWeight: '700' }],
         'h1-desktop': ['36px', { lineHeight: '42px', fontWeight: '700' }],
@@ -30,36 +27,81 @@ const config: Config = {
         'button-mobile': ['18px', { lineHeight: '21px', letterSpacing: '-0.25px', fontWeight: '600' }],
         'small-mobile': ['11px', { lineHeight: '13px', letterSpacing: '-0.025em', fontWeight: '400' }],
       },
+      // Corrected and reorganized color palette based on your image
       colors: {
-        'brand-primary': '#9E18B9',
-        'brand-secondary': '#0678AB',
-        'accent-orange': '#EA6000',
-        'accent-green': '#23A300',
-        'accent-blue': '#6F34E5',
-        'accent-yellow': '#FBB02D',
-        'denotative-success': '#157F1F',
-        'denotative-error': '#DC1818',
-        'btn-primary-bg': '#0896D9',
-        'btn-primary-bg-hover': '#056E9E',
-        'btn-primary-bg-focus': '#0889C4',
-        'btn-secondary-text': '#0896D9',
-        'btn-secondary-text-hover': '#056E9E',
-        'btn-secondary-bg': 'rgba(8, 150, 217, 0.15)',
-        'btn-secondary-bg-hover': 'rgba(4, 82, 118, 0.1)',
-        'btn-tertiary-text': 'rgba(6, 102, 147, 0.9)',
-        'btn-tertiary-border-hover': '#066693',
-        'btn-disabled-bg': '#656576',
-        'btn-disabled-text': '#F7F7F6',
-        'btn-disabled-secondary-text': '#656576',
-        'text-dark': '#0B0B0A',
-        'text-light': '#F7F7F6',
-        'neutral-dark': '#20201D',
-        'neutral-light': '#E3E3DE',
-        'bg-light': '#F7F7F6',
-        'bg-dark': '#373737',
+        // Brand Colors
+        'brand-primary': '#1E1889',      // Dark Violet
+        'brand-secondary': '#067BAB',     // Cerulean
+
+        // Background & Text Colors
+        'bg-light': '#F7F7F9',           // Seasalt
+        'bg-dark': '#08080A',            // Night
+        'text-light': '#F7F7F9',         // Seasalt
+        'text-dark': '#08080A',          // Night
+
+        // Neutral Shades
+        'neutral-dark': '#202D7D',       // Eerie Black
+        'neutral-light': '#E3E3DE',      // Platinum
+        'neutral-cool-gray': '#8D8D93',  // Cool Gray
+        'neutral-dim-gray': '#656578',   // Dim Gray
+
+        // Denotative / State Colors
+        'denotative-success': '#0C7B18', // Asian Spice
+        'denotative-error': '#DC1B1B',   // Rojo
+        'denotative-action-hover': '#2D9BDB', // Celestial Blue
+        'denotative-action-active': '#1E5083', // Bice Blue
+
+        // Accent Colors
+        'accent-orange-spice': '#EA6000',
+        'accent-blue-violet': '#5F3AE5',
+        'accent-kelly-green': '#24D400',
+        'accent-xanthous': '#FFDD2D',
+        'accent-hellebore': '#674FFD',
+        'accent-jellyfish': '#4B83D3',
+        'accent-picton-blue': '#30A8EC',
+        'accent-sandy-brown': '#FFAC33',
+        'accent-mauve': '#9F49F3',
+        'accent-crocus-violet': '#9D74C7',
+        'accent-harlequin': '#47FF1F',
+        'accent-satin-lime': '#D1EC00',
+        'accent-peach-yellow': '#FDE1A1',
+        'accent-peach-grandis': '#FFC6A3',
+        'accent-mauveine': '#9F49D8',
+        'accent-indigo-dye': '#1E5083',
+        'accent-prussian-blue': '#02257B',
+        'accent-burnt-orange': '#B85500',
+        'accent-chrysler-blue': '#2D9BDB',
+        'accent-blue-gem': '#27129D',
+        'accent-keen-green': '#51A900',
+        'accent-zia-olive': '#929200',
+        'accent-cambridge': '#709A75',
+        'accent-tigers-eye': '#D26F24',
+
+        // Component-specific semantic colors
+        // These map the abstract roles in your CSS to the correct palette colors
+        'btn-primary-bg': '#1E1889',             // brand-primary
+        'btn-primary-bg-hover': '#5F3AE5',        // accent-blue-violet
+        'btn-primary-bg-focus': '#9F49F3',         // accent-mauve
+        
+        'btn-secondary-text': '#067BAB',          // brand-secondary
+        'btn-secondary-text-hover': '#2D9BDB',    // denotative-action-hover
+        'btn-secondary-bg': 'transparent',
+        'btn-secondary-bg-hover': 'rgba(6, 123, 171, 0.1)', // 10% opacity of brand-secondary
+        
+        'btn-tertiary-text': '#067BAB',           // brand-secondary
+        'btn-tertiary-border-hover': '#2D9BDB',   // denotative-action-hover
+        
+        'btn-disabled-bg': '#E3E3DE',             // neutral-light
+        'btn-disabled-text': '#8D8D93',           // neutral-cool-gray
+        'btn-disabled-secondary-text': '#8D8D93', // neutral-cool-gray
+      },
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+        display: ['Montserrat', 'sans-serif'],
       },
     },
   },
   plugins: [],
 };
+
 export default config;
