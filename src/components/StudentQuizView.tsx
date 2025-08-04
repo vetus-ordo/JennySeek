@@ -1,82 +1,131 @@
 'use client';
 import React, { useState } from 'react';
 import useAppStore from '@/lib/store';
+import Button from './ui/Button';
 
 const StudentQuizView = () => {
-    const { activeAssignment, studentAnswers, submitAnswer, submitForGrading } = useAppStore();
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const { activeAssignment, studentAnswers, submitAnswer, submitForGrading } = useAppStore();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
-    if (!activeAssignment) {
-        // Fallback UI while the assignment is loading or if none is active
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p>Loading Quiz...</p>
-            </div>
-        );
-    }
-
-    const currentQuestion = activeAssignment.questions[currentQuestionIndex];
-    const totalQuestions = activeAssignment.questions.length;
-    const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
-    const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
-
-    const handleNext = () => {
-        if (!isLastQuestion) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-        } else {
-            submitForGrading();
-        }
-    };
-
+  if (!activeAssignment) {
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
-            <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl">
-                <div className="bg-white border-b border-gray-200 p-4 rounded-t-lg">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-blue-600">STUDENT MODE</span>
-                        <span className="text-sm text-gray-500">
-                            Question {currentQuestionIndex + 1} of {totalQuestions}
-                        </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                            style={{ width: `${progressPercentage}%` }}
-                        ></div>
-                    </div>
-                </div>
-                <div className="p-8">
-                    <div className="text-center mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-900 mt-2">{currentQuestion.text}</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {currentQuestion.options.map((option, index) => (
-                            <button
-                                key={index}
-                                onClick={() => submitAnswer(currentQuestion.id, index)}
-                                className={`w-full text-left p-4 rounded-lg border-2 text-base font-medium transition-all transform hover:scale-105
-                                ${studentAnswers[currentQuestion.id] === index
-                                        ? 'border-blue-600 bg-blue-50 text-blue-700'
-                                        : 'bg-white border-gray-300 hover:border-gray-500'
-                                    }`}
-                            >
-                                {option}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="mt-10 flex justify-end">
-                        <button
-                            onClick={handleNext}
-                            disabled={studentAnswers[currentQuestion.id] === undefined}
-                            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                        >
-                            {isLastQuestion ? 'Submit For Grading' : 'Next Question'}
-                        </button>
-                    </div>
-                </div>
-            </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Quiz...</p>
         </div>
+      </div>
     );
+  }
+
+  const currentQuestion = activeAssignment.questions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === activeAssignment.questions.length - 1;
+  const progress = ((currentQuestionIndex + 1) / activeAssignment.questions.length) * 100;
+
+  const handleAnswerSelect = (answerIndex: number) => {
+    setSelectedAnswer(answerIndex);
+    submitAnswer(currentQuestion.id, answerIndex);
+  };
+
+  const handleNext = () => {
+    if (isLastQuestion) {
+      submitForGrading();
+    } else {
+      setCurrentQuestionIndex(prev => prev + 1);
+      setSelectedAnswer(studentAnswers[activeAssignment.questions[currentQuestionIndex + 1]?.id] ?? null);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+      setSelectedAnswer(studentAnswers[activeAssignment.questions[currentQuestionIndex - 1]?.id] ?? null);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="py-6">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                {activeAssignment.title}
+              </h1>
+              <div className="text-sm text-gray-500">
+                Question {currentQuestionIndex + 1} of {activeAssignment.questions.length}
+              </div>
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="progress-bar">
+              <div 
+                className="progress-fill transition-all duration-500" 
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Question Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-xl shadow-sm border p-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-8 leading-relaxed">
+            {currentQuestion.text}
+          </h2>
+
+          <div className="space-y-4 mb-8">
+            {currentQuestion.options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswerSelect(index)}
+                className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
+                  selectedAnswer === index
+                    ? 'border-blue-500 bg-blue-50 text-blue-900'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center">
+                  <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center ${
+                    selectedAnswer === index
+                      ? 'border-blue-500 bg-blue-500'
+                      : 'border-gray-300'
+                  }`}>
+                    {selectedAnswer === index && (
+                      <div className="w-2 h-2 rounded-full bg-white"></div>
+                    )}
+                  </div>
+                  <span className="font-medium">{option}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Navigation */}
+          <div className="flex justify-between items-center">
+            <Button
+              variant="secondary"
+              onClick={handlePrevious}
+              disabled={currentQuestionIndex === 0}
+            >
+              Previous
+            </Button>
+            
+            <Button
+              variant="primary"
+              onClick={handleNext}
+              disabled={selectedAnswer === null}
+            >
+              {isLastQuestion ? 'Submit Quiz' : 'Next Question'}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default StudentQuizView;

@@ -9,44 +9,66 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // CORRECTED - Brand Colors from the FINAL Style Guide
-        'brand': {
-          primary: '#9E1B89',      // Dark Violet
-          'primary-hover': '#861774', // A slightly darker violet for hover
-          secondary: '#067BAB',    // Cerulean
-          'primary-light': '#FDF7FF', // A custom, very light purple for backgrounds
-          accent: '#D76FEC',       // Heliotrope (for romantic accents)
-        },
-        // Denotative Colors
-        'denotative': {
-          success: '#0C7D58',      // Asian Spice
-          error: '#DC1818',        // Rojo
-        },
-        // COMPLETE Neutral Color Scale from Style Guide
-        'neutral': {
-          10: '#F7F7F6',          // Seasalt
-          20: '#EBEBEB',          // Light Gray (for steps)
-          30: '#E3E3DE',          // Platinum
-          40: '#D7D7D7',          // Light Gray (for steps)
-          50: '#C2C2C2',          // Light Gray (for steps)
-          60: '#AEAEAE',          // Light Gray (for steps)
-          70: '#808093',          // Cool Gray
-          80: '#656576',          // Dim Gray (Used for Disabled)
-          90: '#20201D',          // Eerie Black
-          100: '#0B0B0A',         // Night
-        },
-        'bg-light': '#F7F7F6',      // Using Seasalt for the main light background
+        'eduseek': {
+          'heliotrope': '#9E76EC',
+          'steel-pink': '#C838E5',
+          'mauveine': '#781390',
+          'ripe-plum': '#4D0C5A',
+          'dark-violet': '#9E1B89',
+          'jellyfish': '#3ABCF8',
+          'picton-blue': '#09A4EC',
+          'indigo-dye': '#045276',
+          'prussian-blue': '#022938',
+          'cerulean': '#067BAB',
+          'orange-spice': '#FF8600',
+          'wildfire': '#FF8833',
+          'burnt-orange': '#884000',
+          'chocolate': '#7A3300',
+          'kelly-green': '#47A100',
+          'satin-lime': '#315000',
+          'keen-green': '#166600',
+          'zia-olive': '#092900',
+          'seasalt': '#F7F7F6',
+          'platinum': '#E3E3DE',
+          'cool-gray': '#808093',
+          'dim-gray': '#656576',
+          'eerie-black': '#20201D',
+          'night': '#0B0B0A',
+          'success': '#0C7D58',
+          'error': '#DC1818',
+        }
       },
       fontFamily: {
-        display: ['Montserrat', 'sans-serif'],
-        sans: ['Roboto', 'sans-serif'],
+        'display': ['Montserrat', 'sans-serif'],
+        'sans': ['Roboto', 'sans-serif'],
       },
       fontSize: {
-        'title-desktop': '3.75rem','h1-desktop': '3rem','h2-desktop': '2.25rem','h3-desktop': '1.875rem','body-desktop': '1rem','label-desktop': '1rem','button-desktop': '1rem','small-desktop': '0.875rem',
-        'title-mobile': '2.25rem','h1-mobile': '2rem','h2-mobile': '1.5rem','h3-mobile': '1.25rem','body-mobile': '1rem','label-mobile': '0.875rem','button-mobile': '1rem','small-mobile': '0.75rem',
+        'title-desktop': ['4rem', { lineHeight: '1.1', letterSpacing: '0.06em' }],
+        'h1-desktop': ['2.25rem', { lineHeight: '1.2', letterSpacing: '0' }],
+        'h2-desktop': ['1.5rem', { lineHeight: '1.3', letterSpacing: '0.01em' }],
+        'h3-desktop': ['1.25rem', { lineHeight: '1.4', letterSpacing: '0' }],
+        'body-desktop': ['1rem', { lineHeight: '1.6', letterSpacing: '0.02em' }],
+        'label-desktop': ['1rem', { lineHeight: '1.5', letterSpacing: '-0.025em' }],
+        'button-desktop': ['1rem', { lineHeight: '1.5', letterSpacing: '-0.25px' }],
+        'small-desktop': ['0.875rem', { lineHeight: '1.4', letterSpacing: '0' }],
       },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+      }
     },
   },
   plugins: [],
 };
+
 export default config;
