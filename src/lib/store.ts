@@ -1,28 +1,18 @@
 import { create } from 'zustand';
-import { Assignment, assignments, fallbackQuiz } from './assignments';
+import { Assignment, assignments } from './assignments';
 
-type View =
-  | 'splash'
-  | 'teacher-topic'
-  | 'teacher-generating'
-  | 'teacher-review'
-  | 'quiz'
-  | 'results'
-  | 'final-payoff'; // <-- ADDED
+// The final, simplified set of views for the application
+type View = 'splash' | 'teacher-dashboard' | 'quiz' | 'results' | 'final-payoff';
 
 export interface AppState {
   view: View;
-  topic: string;
   activeAssignment: Assignment | null;
   studentAnswers: Record<string, number>;
-  completedQuizIds: string[]; // <-- CHANGED from a number to an array of IDs
-  
-  // ... actions
+  completedQuizIds: string[];
+
+  // Actions
   startApp: () => void;
-  setTopic: (topic: string) => void;
-  generateAssignment: () => void;
-  completeGeneration: () => void;
-  approveAssignment: () => void;
+  selectAssignment: (assignment: Assignment) => void; // Correctly accepts the full object
   submitAnswer: (questionId: string, answerIndex: number) => void;
   submitForGrading: () => void;
   restart: () => void;
@@ -30,48 +20,19 @@ export interface AppState {
 
 const useAppStore = create<AppState>((set, get) => ({
   view: 'splash',
-  topic: '',
   activeAssignment: null,
   studentAnswers: {},
   completedQuizIds: [],
 
-  startApp: () => set({ view: 'teacher-topic' }),
-  setTopic: (topic) => set({ topic }),
-  generateAssignment: () => set({ view: 'teacher-generating' }),
+  startApp: () => set({ view: 'teacher-dashboard' }),
 
-  completeGeneration: () => {
-    const { topic } = get();
-    const topicWords = topic.toLowerCase().split(/\s+/);
-    
-    let bestMatch: Assignment | null = null;
-    let maxMatchCount = 0;
-
-    // Find the best match from the available quizzes
-    const availableQuizzes = assignments.filter(a => !get().completedQuizIds.includes(a.id));
-
-    if (availableQuizzes.length === 0) {
-        // If all main quizzes are done, just use the fallback as a fun extra
-        set({ activeAssignment: fallbackQuiz, view: 'teacher-review' });
-        return;
-    }
-
-    for (const assignment of availableQuizzes) {
-        const matchCount = assignment.keywords.filter(kw => topicWords.includes(kw)).length;
-        if (matchCount > maxMatchCount) {
-            maxMatchCount = matchCount;
-            bestMatch = assignment;
-        }
-    }
-    
-    // If no keywords matched, pick a random available one. If a topic was "cheese", don't show the fallback yet.
-    if (!bestMatch) {
-        bestMatch = availableQuizzes[Math.floor(Math.random() * availableQuizzes.length)];
-    }
-    
-    set({ activeAssignment: bestMatch, view: 'teacher-review' });
+  selectAssignment: (assignment) => {
+    set({
+      activeAssignment: assignment,
+      view: 'quiz',
+      studentAnswers: {}, // Reset answers for the new quiz
+    });
   },
-
-  approveAssignment: () => set({ view: 'quiz' }),
 
   submitAnswer: (questionId, answerIndex) => {
     set((state) => ({
@@ -81,20 +42,21 @@ const useAppStore = create<AppState>((set, get) => ({
 
   submitForGrading: () => {
     const { activeAssignment } = get();
+    // Add the completed quiz ID to the list if it's not already there
     if (activeAssignment && !get().completedQuizIds.includes(activeAssignment.id)) {
-        set(state => ({
-            completedQuizIds: [...state.completedQuizIds, activeAssignment.id]
-        }));
+      set((state) => ({
+        completedQuizIds: [...state.completedQuizIds, activeAssignment.id],
+      }));
     }
     set({ view: 'results' });
   },
 
   restart: () => {
-    // Check if all main assignments have been completed
+    // Check if all main assignments are done to show the payoff
     if (get().completedQuizIds.length >= assignments.length) {
       set({ view: 'final-payoff' });
     } else {
-      set({ view: 'teacher-topic', topic: '', activeAssignment: null });
+      set({ view: 'teacher-dashboard' }); // Go back to the dashboard
     }
   },
 }));
