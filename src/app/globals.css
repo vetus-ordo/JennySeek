@@ -73,6 +73,19 @@ body {
     box-shadow: 0 4px 12px rgba(6, 123, 171, 0.3);
   }
   
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(6, 123, 171, 0.3);
+  }
+  
+  .btn-primary:disabled {
+    background-color: var(--cool-gray);
+    color: var(--dim-gray);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
   .btn-secondary {
     background-color: var(--platinum);
     color: var(--eerie-black);
@@ -84,6 +97,12 @@ body {
     color: white;
   }
   
+  .btn-secondary:disabled {
+    background-color: var(--seasalt);
+    color: var(--cool-gray);
+    cursor: not-allowed;
+  }
+  
   .btn-tertiary {
     background-color: transparent;
     color: var(--cerulean);
@@ -93,6 +112,13 @@ body {
   .btn-tertiary:hover {
     background-color: var(--cerulean);
     color: white;
+  }
+  
+  .btn-tertiary:disabled {
+    background-color: transparent;
+    color: var(--cool-gray);
+    border-color: var(--cool-gray);
+    cursor: not-allowed;
   }
   
   .card {
@@ -118,6 +144,11 @@ body {
     color: var(--burnt-orange);
   }
   
+  .status-closed {
+    background-color: #F5F5F5;
+    color: var(--cool-gray);
+  }
+  
   .progress-bar {
     @apply w-full bg-gray-200 rounded-full h-2;
   }
@@ -125,5 +156,159 @@ body {
   .progress-fill {
     @apply h-2 rounded-full transition-all duration-300;
     background-color: var(--success);
+  }
+  
+  /* Typography Components */
+  .heading-display {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  .heading-1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  
+  .heading-2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  
+  .heading-3 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+  }
+  
+  .body-text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  
+  .label-text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+  }
+  
+  .small-text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+  }
+  
+  /* Form Components */
+  .form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .form-input:disabled {
+    @apply bg-gray-100 text-gray-500 cursor-not-allowed;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .form-error {
+    @apply text-sm text-red-600 mt-1;
+    color: var(--error);
+  }
+  
+  .form-helper {
+    @apply text-sm text-gray-500 mt-1;
+  }
+  
+  /* Animation utilities */
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-slideUp {
+    animation: slideUp 0.4s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Loading states */
+  .loading-spinner {
+    @apply inline-block w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin;
+  }
+  
+  /* Focus states for accessibility */
+  .focus-visible {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--seasalt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cool-gray);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dim-gray);
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --seasalt: #ffffff;
+    --eerie-black: #000000;
+    --cool-gray: #666666;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
