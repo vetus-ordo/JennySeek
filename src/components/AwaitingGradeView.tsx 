@@ -9,11 +9,11 @@ const AwaitingGradeView = () => {
   return (
     <div className="w-full max-w-lg bg-neutral-10 p-8 rounded-xl shadow-2xl border border-neutral-30 text-center">
       <h2 className="text-h2 text-denotative-success">Test Complete!</h2>
-      <p className="text-body text-neutral-80 mt-4">
+      <p className="text-body text-neutral-90 mt-4">
         The assignment has been successfully submitted.
       </p>
       <p className="text-body text-neutral-70 mt-2">
-        It has been sent to the teacher, Andrew, for final review and grading. He'll get back to you soon 😉
+        It has been sent to the head teacher, Andrew, for final review and grading. He'll get back to you soon 😉
       </p>
       <Button variant="primary" className="mt-8" onClick={startApp}>
         Run Another Test

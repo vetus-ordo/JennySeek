@@ -9,7 +9,7 @@ body {
 }
 
 @layer components {
-  /* Typography Classes (from Style Guide) */
+  /* Typography Classes */
   .text-title { @apply font-display text-title-mobile md:text-title-desktop; }
   .text-h1 { @apply font-display text-h1-mobile md:text-h1-desktop; }
   .text-h2 { @apply font-display text-h2-mobile md:text-h2-desktop; }
@@ -29,13 +29,13 @@ body {
     @apply bg-brand-primary text-neutral-10;
   }
   .btn-primary:hover {
-    @apply bg-denotative-info-dark;
+    @apply bg-brand-primary-hover;
   }
   .btn-primary:focus-visible {
-    @apply bg-denotative-info-dark outline-none ring-2 ring-neutral-10 ring-offset-2 ring-offset-denotative-info-dark;
+    @apply bg-brand-primary-hover outline-none ring-2 ring-neutral-10 ring-offset-2 ring-offset-brand-primary-hover;
   }
   .btn-primary:disabled {
-    @apply bg-neutral-30 text-neutral-60 cursor-not-allowed;
+    @apply bg-neutral-30 text-neutral-80 cursor-not-allowed;
   }
 
   /* Secondary Button Variant */
@@ -43,10 +43,10 @@ body {
     @apply bg-transparent text-brand-primary border border-brand-primary;
   }
   .btn-secondary:hover {
-    @apply bg-brand-primary-light text-denotative-info-dark border-denotative-info-dark;
+    @apply bg-brand-primary-light;
   }
   .btn-secondary:disabled {
-    @apply bg-transparent text-neutral-60 border-neutral-40 cursor-not-allowed;
+    @apply bg-transparent text-neutral-80 border-neutral-30 cursor-not-allowed;
   }
   
   /* Tertiary Button Variant */
@@ -57,11 +57,11 @@ body {
       @apply underline;
   }
   .btn-tertiary:disabled {
-      @apply text-neutral-60 cursor-not-allowed no-underline;
+      @apply text-neutral-80 cursor-not-allowed no-underline;
   }
 }
 
-/* Updated React Flow styles to use brand colors */
+/* React Flow styles */
 .react-flow .react-flow__handle {
   @apply bg-brand-secondary;
 }

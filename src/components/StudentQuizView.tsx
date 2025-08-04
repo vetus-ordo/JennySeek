@@ -4,7 +4,8 @@ import useAppStore from '@/lib/store';
 import Button from '@/components/ui/Button';
 
 const StudentQuizView = () => {
-  const { activeAssignment, studentAnswers, submitAnswer, gradeQuiz } = useAppStore();
+  // CORRECTED: Using 'submitForGrading' from the new store
+  const { activeAssignment, studentAnswers, submitAnswer, submitForGrading } = useAppStore();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   if (!activeAssignment) return null;
@@ -16,16 +17,18 @@ const StudentQuizView = () => {
     if (!isLastQuestion) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      gradeQuiz();
+      // CORRECTED: Calling the correct function for the new flow
+      submitForGrading();
     }
   };
 
   return (
     <div className="w-full max-w-3xl bg-neutral-10 p-8 rounded-2xl shadow-2xl border border-neutral-30">
-      <div className="text-center mb-8">
-        <p className="text-label text-brand-secondary font-semibold">{activeAssignment.title}</p>
-        <h2 className="text-h2 mt-2">{currentQuestion.text}</h2>
-      </div>
+        <div className="text-center mb-8">
+            <p className="text-sm font-bold text-brand-primary">STUDENT MODULE</p>
+            <p className="text-label text-brand-secondary font-semibold mt-4">{activeAssignment.title}</p>
+            <h2 className="text-h2 mt-2">{currentQuestion.text}</h2>
+        </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {currentQuestion.options.map((option, index) => (
           <button
@@ -47,7 +50,7 @@ const StudentQuizView = () => {
           onClick={handleNext}
           disabled={studentAnswers[currentQuestion.id] === undefined}
         >
-          {isLastQuestion ? 'Submit For Grading' : 'Next Question'}
+          {isLastQuestion ? 'Submit for Grading' : 'Next Question'}
         </Button>
       </div>
     </div>

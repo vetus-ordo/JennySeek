@@ -1,68 +1,67 @@
-// /lib/store.ts
 import { create } from 'zustand';
-import { assignments, Assignment } from './assignments';
+import { Assignment, assignments } from './assignments';
+import { saveReportCard } from './firebase';
+
+type View = 'splash' | 'generate-questions' | 'quiz' | 'awaiting-grade';
 
 export interface AppState {
-  view: 'splash' | 'add-student' | 'dashboard' | 'quiz' | 'report';
-  studentName: string | null;
-  assignments: Assignment[];
+  view: View;
+  topic: string;
+  isGenerating: boolean;
   activeAssignment: Assignment | null;
-  studentAnswers: Record<string, number>; // questionId: answerIndex
-  isGraded: boolean;
-  score: number;
+  studentAnswers: Record<string, number>;
+  
+  setTopic: (topic: string) => void;
+  generateAssignment: () => void;
   startApp: () => void;
-  addStudent: (name: string) => void;
-  assignQuiz: (assignmentId: string) => void;
+  startQuiz: () => void;
   submitAnswer: (questionId: string, answerIndex: number) => void;
-  gradeQuiz: () => void;
-  returnToDashboard: () => void;
+  submitForGrading: () => void;
 }
 
-const useAppStore = create<AppState>((set, get) => ({
-  view: 'splash',
-  studentName: null,
-  assignments,
+// This function defines the initial state of the application.
+const getInitialState = () => ({
+  view: 'splash' as View,
+  topic: '',
+  isGenerating: false,
   activeAssignment: null,
   studentAnswers: {},
-  isGraded: false,
-  score: 0,
+});
+
+const useAppStore = create<AppState>((set, get) => ({
+  ...getInitialState(), // Set the initial state correctly
   
-  startApp: () => set({ view: 'add-student' }),
+  setTopic: (topic) => set({ topic }),
   
-  addStudent: (name) => set({ view: 'dashboard', studentName: name }),
-  
-  assignQuiz: (assignmentId) => {
-    const assignment = get().assignments.find(a => a.id === assignmentId);
-    if (assignment) {
-      set({ view: 'quiz', activeAssignment: assignment });
+  generateAssignment: () => {
+    const topic = get().topic.toLowerCase();
+    const foundAssignment = assignments.find(a => a.title.toLowerCase().includes(topic));
+    
+    if (foundAssignment) {
+      set({ isGenerating: true });
+      setTimeout(() => {
+        set({ activeAssignment: foundAssignment, isGenerating: false });
+      }, 1500);
+    } else {
+      alert("No assignment found for that topic. Try 'History' or 'Future'!");
     }
   },
+
+  // When starting the app, reset everything to the initial state except for the view
+  startApp: () => set({ ...getInitialState(), view: 'generate-questions' }),
+  
+  startQuiz: () => set({ view: 'quiz' }),
   
   submitAnswer: (questionId, answerIndex) => {
-    set(state => ({
-      studentAnswers: {
-        ...state.studentAnswers,
-        [questionId]: answerIndex,
-      },
-    }));
+    set(state => ({ studentAnswers: { ...state.studentAnswers, [questionId]: answerIndex } }));
   },
   
-  gradeQuiz: () => {
-    set({
-      view: 'report',
-      isGraded: true,
-      score: 100, // Always a perfect score!
-    });
-  },
-
-  returnToDashboard: () => {
-    set({
-      view: 'dashboard',
-      activeAssignment: null,
-      studentAnswers: {},
-      isGraded: false,
-      score: 0,
-    });
+  submitForGrading: () => {
+    const { activeAssignment, studentAnswers } = get();
+    if (activeAssignment) {
+      saveReportCard('Jenny', activeAssignment.title, studentAnswers);
+    }
+    set({ view: 'awaiting-grade' });
   },
 }));
 
