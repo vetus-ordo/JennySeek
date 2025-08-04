@@ -48,29 +48,4 @@ body {
   .btn-secondary:disabled {
     @apply bg-transparent text-neutral-80 border-neutral-30 cursor-not-allowed;
   }
-  
-  /* Tertiary Button Variant */
-  .btn-tertiary {
-      @apply bg-transparent text-brand-primary rounded-none;
-  }
-  .btn-tertiary:hover {
-      @apply underline;
-  }
-  .btn-tertiary:disabled {
-      @apply text-neutral-80 cursor-not-allowed no-underline;
-  }
-}
-
-/* React Flow styles */
-.react-flow .react-flow__handle {
-  @apply bg-brand-secondary;
-}
-
-.react-flow .react-flow__edge-path {
-  @apply stroke-brand-secondary;
-  stroke-width: 2;
-}
-
-.react-flow .react-flow__node {
-    @apply bg-neutral-10/80 backdrop-blur-md rounded-lg shadow-lg border border-neutral-30;
 }

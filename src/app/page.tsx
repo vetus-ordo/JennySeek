@@ -1,25 +1,43 @@
 'use client';
 import React from 'react';
 import useAppStore from '@/lib/store';
-import Button from '@/components/ui/Button'; // CORRECTED IMPORT PATH
+import SplashScreen from '@/components/SplashScreen';
+import TeacherTopicView from '@/components/TeacherTopicView';
+import TeacherGeneratingView from '@/components/TeacherGeneratingView';
+import TeacherReviewView from '@/components/TeacherReviewView';
+import StudentQuizView from '@/components/StudentQuizView';
+import ResultsDashboard from '@/components/ResultsDashboard';
+import FinalPayoffView from '@/components/FinalPayoffView'; // <-- IMPORT
 
-const AwaitingGradeView = () => {
-  const { startApp } = useAppStore();
+export default function Home() {
+  const { view } = useAppStore();
+
+  const renderView = () => {
+    switch (view) {
+      case 'splash':
+        return <SplashScreen />;
+      case 'teacher-topic':
+        return <TeacherTopicView />;
+      case 'teacher-generating':
+        return <TeacherGeneratingView />;
+      case 'teacher-review':
+        return <TeacherReviewView />;
+      case 'quiz':
+        return <StudentQuizView />;
+      case 'results':
+        return <ResultsDashboard />;
+      case 'final-payoff': // <-- ADDED
+        return <FinalPayoffView />;
+      default:
+        return <SplashScreen />;
+    }
+  };
 
   return (
-    <div className="w-full max-w-lg bg-neutral-10 p-8 rounded-xl shadow-2xl border border-neutral-30 text-center">
-      <h2 className="text-h2 text-denotative-success">Test Complete!</h2>
-      <p className="text-body text-neutral-80 mt-4">
-        The assignment has been successfully submitted.
-      </p>
-      <p className="text-body text-neutral-70 mt-2">
-        It has been sent to the teacher, Andrew, for final review and grading. He'll get back to you soon 😉
-      </p>
-      <Button variant="primary" className="mt-8" onClick={startApp}>
-        Run Another Test
-      </Button>
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-24 bg-bg-light">
+      <div className="relative flex place-items-center w-full">
+        {renderView()}
+      </div>
+    </main>
   );
-};
-
-export default AwaitingGradeView;
+}

@@ -1,67 +1,101 @@
 import { create } from 'zustand';
-import { Assignment, assignments } from './assignments';
-import { saveReportCard } from './firebase';
+import { Assignment, assignments, fallbackQuiz } from './assignments';
 
-type View = 'splash' | 'generate-questions' | 'quiz' | 'awaiting-grade';
+type View =
+  | 'splash'
+  | 'teacher-topic'
+  | 'teacher-generating'
+  | 'teacher-review'
+  | 'quiz'
+  | 'results'
+  | 'final-payoff'; // <-- ADDED
 
 export interface AppState {
   view: View;
   topic: string;
-  isGenerating: boolean;
   activeAssignment: Assignment | null;
   studentAnswers: Record<string, number>;
+  completedQuizIds: string[]; // <-- CHANGED from a number to an array of IDs
   
+  // ... actions
+  startApp: () => void;
   setTopic: (topic: string) => void;
   generateAssignment: () => void;
-  startApp: () => void;
-  startQuiz: () => void;
+  completeGeneration: () => void;
+  approveAssignment: () => void;
   submitAnswer: (questionId: string, answerIndex: number) => void;
   submitForGrading: () => void;
+  restart: () => void;
 }
 
-// This function defines the initial state of the application.
-const getInitialState = () => ({
-  view: 'splash' as View,
+const useAppStore = create<AppState>((set, get) => ({
+  view: 'splash',
   topic: '',
-  isGenerating: false,
   activeAssignment: null,
   studentAnswers: {},
-});
+  completedQuizIds: [],
 
-const useAppStore = create<AppState>((set, get) => ({
-  ...getInitialState(), // Set the initial state correctly
-  
+  startApp: () => set({ view: 'teacher-topic' }),
   setTopic: (topic) => set({ topic }),
-  
-  generateAssignment: () => {
-    const topic = get().topic.toLowerCase();
-    const foundAssignment = assignments.find(a => a.title.toLowerCase().includes(topic));
+  generateAssignment: () => set({ view: 'teacher-generating' }),
+
+  completeGeneration: () => {
+    const { topic } = get();
+    const topicWords = topic.toLowerCase().split(/\s+/);
     
-    if (foundAssignment) {
-      set({ isGenerating: true });
-      setTimeout(() => {
-        set({ activeAssignment: foundAssignment, isGenerating: false });
-      }, 1500);
-    } else {
-      alert("No assignment found for that topic. Try 'History' or 'Future'!");
+    let bestMatch: Assignment | null = null;
+    let maxMatchCount = 0;
+
+    // Find the best match from the available quizzes
+    const availableQuizzes = assignments.filter(a => !get().completedQuizIds.includes(a.id));
+
+    if (availableQuizzes.length === 0) {
+        // If all main quizzes are done, just use the fallback as a fun extra
+        set({ activeAssignment: fallbackQuiz, view: 'teacher-review' });
+        return;
     }
+
+    for (const assignment of availableQuizzes) {
+        const matchCount = assignment.keywords.filter(kw => topicWords.includes(kw)).length;
+        if (matchCount > maxMatchCount) {
+            maxMatchCount = matchCount;
+            bestMatch = assignment;
+        }
+    }
+    
+    // If no keywords matched, pick a random available one. If a topic was "cheese", don't show the fallback yet.
+    if (!bestMatch) {
+        bestMatch = availableQuizzes[Math.floor(Math.random() * availableQuizzes.length)];
+    }
+    
+    set({ activeAssignment: bestMatch, view: 'teacher-review' });
   },
 
-  // When starting the app, reset everything to the initial state except for the view
-  startApp: () => set({ ...getInitialState(), view: 'generate-questions' }),
-  
-  startQuiz: () => set({ view: 'quiz' }),
-  
+  approveAssignment: () => set({ view: 'quiz' }),
+
   submitAnswer: (questionId, answerIndex) => {
-    set(state => ({ studentAnswers: { ...state.studentAnswers, [questionId]: answerIndex } }));
+    set((state) => ({
+      studentAnswers: { ...state.studentAnswers, [questionId]: answerIndex },
+    }));
   },
-  
+
   submitForGrading: () => {
-    const { activeAssignment, studentAnswers } = get();
-    if (activeAssignment) {
-      saveReportCard('Jenny', activeAssignment.title, studentAnswers);
+    const { activeAssignment } = get();
+    if (activeAssignment && !get().completedQuizIds.includes(activeAssignment.id)) {
+        set(state => ({
+            completedQuizIds: [...state.completedQuizIds, activeAssignment.id]
+        }));
     }
-    set({ view: 'awaiting-grade' });
+    set({ view: 'results' });
+  },
+
+  restart: () => {
+    // Check if all main assignments have been completed
+    if (get().completedQuizIds.length >= assignments.length) {
+      set({ view: 'final-payoff' });
+    } else {
+      set({ view: 'teacher-topic', topic: '', activeAssignment: null });
+    }
   },
 }));
 
