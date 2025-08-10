@@ -12,39 +12,38 @@ const SplashScreen = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const features = [
+const features = [
   {
-    title: "She's Radiant, Actually",
-    description: "She’s the kind of beautiful that scrambles your thoughts, even when she insists she looks like a salamander. Honestly, unfair.",
-    // image: "/public/salamnder.png"
+    title: "She's Radiant",
+    description:
+      "The kind of beautiful that scrambles your brain, even when she claims she looks like a salamander. Unfair.",
+    image: "/salamander.png",
   },
   {
-    title: "Good Vibes", 
-    description: "Talking to her feels like picking up a conversation you didn't know you'd started years ago.",
-    // image: "/public/chemistry.jpg"
+    title: "Good Vibes",
+    description:
+      "Talking to her feels like picking up a conversation you started lifetimes ago.",
+    image: "/chemistry.jpg",
   },
   {
     title: "They Crack Each Other Up",
-    description: "The kind of laughter that just keeps going. Like, \"we really shouldn't be this funny together\" energy.",
-    // image: "/public/laughing.jpg"
+    description:
+      'That can’t-breathe, “why-are-we-this-funny” laughter loop.',
+    image: "/laughing.jpg",
   },
   {
-    title: "Already Planning Adventures",
-    description: "Road trips. Sunday mornings. Ice cream at midnight. It's weird how easy it is to imagine her there.",
-    // image: "/public/future.jpg"
+    title: "Adventure Planning",
+    description:
+      "Vacations, Sunday mornings, ice cream at midnight - picturing her there is effortless.",
+    image: "/future.jpg",
   },
   {
     title: "Full Heart-Eyes Mode",
-    description: "He just wants to see her win. Big things, little things, anything that makes her smile.",
-    // image: "/public/trophy.jpg"
+    description:
+      "Andrew’s prime directive: make Jenny happy.",
+    image: "/heart.png",
   },
-  {
-    title: "Not Playing It Cool",
-    description: "No games. Just a guy who's ready to mean what he says and show up for her. Every time.",
-    // image: "/public/doorstep.jpg"
-  }
 ];
-
 
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans">
