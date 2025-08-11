@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import useAppStore from '@/lib/store';
 import { assignments } from '@/lib/assignments';
-import AssignmentCard from '@/components/AssignmentCard'; // Fixed import path
+import AssignmentCard from '@/components/AssignmentCard';
 import Button from './ui/Button';
 
 const TeacherDashboard = () => {
-  const { selectAssignment } = useAppStore();
+  const { selectAssignment, goToChat } = useAppStore();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredAssignments = assignments.filter(assignment =>
@@ -16,7 +16,6 @@ const TeacherDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
@@ -26,16 +25,18 @@ const TeacherDashboard = () => {
               </h1>
               <p className="text-gray-600 mt-1">Manage and create assignments for your students</p>
             </div>
-            <Button variant="primary" icon={<span>+</span>}>
-              New Assignment
-            </Button>
+            <div className="flex items-center gap-4">
+                <Button variant="secondary" onClick={goToChat}>
+                    Chat with AI
+                </Button>
+                <Button variant="primary" icon={<span>+</span>}>
+                  New Assignment
+                </Button>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search and Filters */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
@@ -68,8 +69,6 @@ const TeacherDashboard = () => {
             </div>
           </div>
         </div>
-
-        {/* Assignment Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAssignments.map((assignment) => (
             <AssignmentCard
@@ -79,7 +78,6 @@ const TeacherDashboard = () => {
             />
           ))}
         </div>
-
         {filteredAssignments.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-400 mb-4">

@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build": "rm -rf lib && tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "lint": "eslint --ext .js,.ts .",
+    "logs": "firebase functions:log"
+  }
+}

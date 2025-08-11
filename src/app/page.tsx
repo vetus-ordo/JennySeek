@@ -6,6 +6,7 @@ import TeacherDashboard from '@/components/TeacherDashboard';
 import StudentQuizView from '@/components/StudentQuizView';
 import ResultsDashboard from '@/components/ResultsDashboard';
 import FinalPayoffView from '@/components/FinalPayoffView';
+import AIChatView from '@/components/AIChatView';
 
 export default function Home() {
   const { view } = useAppStore();
@@ -22,13 +23,15 @@ export default function Home() {
         return <ResultsDashboard />;
       case 'final-payoff':
         return <FinalPayoffView />;
+      case 'ai-chat':
+        return <AIChatView />;
       default:
-        return <SplashScreen />; // Fallback to splash
+        return <SplashScreen />;
     }
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-50">
+    <div className="w-full min-h-screen bg-gray-50 flex items-center justify-center p-4">
         {renderView()}
     </div>
   );

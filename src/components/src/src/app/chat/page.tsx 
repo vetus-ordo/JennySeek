@@ -1,0 +1,91 @@
+"use client";
+
+import { httpsCallable } from "firebase/functions";
+import { functions } from "@/src/lib/firebase";
+import { useState } from "react";
+import { InappropriateCard } from "@/src/components/InappropriateCard";
+
+type Turn = { role: "user" | "model"; text: string };
+
+export default function ChatPage() {
+  const [input, setInput] = useState("");
+  const [turns, setTurns] = useState<Turn[]>([]);
+  const [showBlocked, setShowBlocked] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  async function send() {
+    const prompt = input.trim();
+    if (!prompt) return;
+
+    setSending(true);
+    setTurns((t) => [...t, { role: "user", text: prompt }]);
+
+    try {
+      const call = httpsCallable(functions, "askJennySeekAI");
+      const { data }: any = await call({ prompt });
+
+      // IMPORTANT: if blocked, do NOT show model text — just show the card
+      if (data?.blocked) {
+        setShowBlocked(true);
+        setSending(false);
+        setInput("");
+        return;
+      }
+
+      if (data?.error) {
+        setTurns((t) => [...t, { role: "model", text: data.error }]);
+        setSending(false);
+        setInput("");
+        return;
+      }
+
+      setTurns((t) => [...t, { role: "model", text: data?.response ?? "" }]);
+      setInput("");
+    } catch (e) {
+      setTurns((t) => [...t, { role: "model", text: "Network error. Try again." }]);
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <div className="mx-auto max-w-2xl p-6">
+      <h1 className="mb-4 text-2xl font-semibold">JennySeek Chat</h1>
+
+      <div className="space-y-3">
+        {turns.map((m, i) => (
+          <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
+            <span
+              className={
+                "inline-block rounded-lg px-3 py-2 " +
+                (m.role === "user" ? "bg-blue-600 text-white" : "bg-gray-100")
+              }
+            >
+              {m.text}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 flex gap-2">
+        <input
+          className="flex-1 rounded border px-3 py-2"
+          placeholder="Type your message"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send()}
+          disabled={sending}
+        />
+        <button
+          onClick={send}
+          disabled={sending}
+          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+        >
+          Send
+        </button>
+      </div>
+
+      {showBlocked && <InappropriateCard onClose={() => setShowBlocked(false)} />}
+    </div>
+  );
+}

@@ -16,7 +16,7 @@ const features = [
   {
     title: "She's Radiant",
     description:
-      "Because she scrambles your brain because she's so beautiful, even when she says she looks like a salamander. Very unfair.",
+      "Because she's so beautiful that she scrambles your brain, even when she says she looks like a salamander. It's very unfair.",
     image: "/salamander.png",
   },
   {
@@ -34,13 +34,13 @@ const features = [
   {
     title: "Adventure Planning",
     description:
-      "Because I see a real future with her.",
+      "Because it feels like we have a real future together.",
     image: "/future.jpg",
   },
   {
-    title: "Satisfaction Guaranteed",
+    title: "She's Unique and Irreplacable",
     description:
-      "Because extraction is imminent.",
+      "And I'm in love with her.",
     image: "/heart.png",
   },
 ];
