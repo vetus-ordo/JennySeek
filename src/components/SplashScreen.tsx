@@ -16,31 +16,31 @@ const features = [
   {
     title: "She's Radiant",
     description:
-      "The kind of beautiful that scrambles your brain, even when she claims she looks like a salamander. Unfair.",
+      "Because she scrambles your brain because she's so beautiful, even when she says she looks like a salamander. Very unfair.",
     image: "/salamander.png",
   },
   {
-    title: "Good Vibes",
+    title: "A Rare Chemistry",
     description:
-      "Talking to her feels like picking up a conversation you started lifetimes ago.",
+      "Because it feels like we've been talking for years.",
     image: "/chemistry.jpg",
   },
   {
-    title: "They Crack Each Other Up",
+    title: "We Crack Each Other Up",
     description:
-      'That can’t-breathe, “why-are-we-this-funny” laughter loop.',
+      'Because we have these can’t-stop laughing loops.',
     image: "/laughing.jpg",
   },
   {
     title: "Adventure Planning",
     description:
-      "Vacations, Sunday mornings, ice cream at midnight - picturing her there is effortless.",
+      "Because I see a real future with her.",
     image: "/future.jpg",
   },
   {
-    title: "Full Heart-Eyes Mode",
+    title: "Satisfaction Guaranteed",
     description:
-      "Andrew’s prime directive: make Jenny happy.",
+      "Because extraction is imminent.",
     image: "/heart.png",
   },
 ];
@@ -242,9 +242,7 @@ const features = [
                                 {feature.description}
                               </p>
                               <div className="w-full aspect-[4/3] flex justify-center items-center overflow-hidden">
-                                <div className="w-full h-full max-w-[260px] mx-auto bg-gradient-to-br from-pink-100 to-purple-100 rounded-lg flex items-center justify-center animate-fadeIn">
-                                  <span className="text-4xl">💖</span>
-                                </div>
+                                <img src={feature.image} alt={feature.title} className="w-full h-full object-cover rounded-lg animate-fadeIn" />
                               </div>
                             </div>
                           )}
@@ -283,9 +281,7 @@ const features = [
                           {features[activeFeature]?.description}
                         </p>
                         <div className="w-full aspect-[4/3] flex justify-center items-center overflow-hidden">
-                          <div className="w-full h-full max-w-[480px] mx-auto bg-gradient-to-br from-pink-100 to-purple-100 rounded-lg flex items-center justify-center animate-fadeIn">
-                            <span className="text-6xl">💖</span>
-                          </div>
+                          <img src={features[activeFeature]?.image} alt={features[activeFeature]?.title} className="w-full h-full object-cover rounded-lg animate-fadeIn" />
                         </div>
                       </div>
                     </div>
